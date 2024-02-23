@@ -154,7 +154,12 @@ unsafe fn msys_tty_on(fd: DWORD) -> bool {
 }
 
 /// returns true if this is a tty
-#[cfg(any(target_arch = "wasm32", target_env = "sgx"))]
+/// default to false for unimplemented platforms
+#[cfg(all(
+    not(unix),
+    not(windows),
+    not(target_os = "hermit")
+))]
 pub fn is(_stream: Stream) -> bool {
     false
 }
